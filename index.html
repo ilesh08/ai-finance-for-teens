@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teen Finance - Smart Money Moves for Teens</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#98FFB3',secondary:'#E6E6FA'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #FAFAFA;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #98FFB3;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #98FFB3;
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        .timeline-dot::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            height: 100%;
+            width: 2px;
+            background-color: #E5E7EB;
+            z-index: -1;
+        }
+        .timeline-item:last-child .timeline-dot::after {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-white shadow-sm py-4 px-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center mr-3">
+                    <i class="ri-rocket-2-line text-white ri-lg"></i>
+                </div>
+                <h1 class="font-['Pacifico'] text-xl text-gray-800">logo</h1>
+                <span class="ml-3 text-gray-600 hidden md:block">Smart Money Moves for Teens</span>
+            </div>
+            <div class="flex items-center">
+                <div class="relative inline-block w-12 mr-2 align-middle select-none">
+                    <input type="checkbox" id="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer transition-all duration-300 ease-in-out" style="top: 0; right: 0; bottom: 0; left: 0;">
+                    <label for="toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-all duration-300 ease-in-out"></label>
+                </div>
+                <div class="w-8 h-8 flex items-center justify-center">
+                    <i class="ri-moon-line text-gray-600 ri-lg"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-gradient-to-r from-white to-primary/10 py-10 px-6">
+        <div class="container mx-auto flex flex-col md:flex-row items-center">
+            <div class="md:w-2/3 mb-8 md:mb-0">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Hi Emma! Ready to track your money?</h2>
+                <p class="text-gray-600 mb-8 text-lg">Keep an eye on your spending, boost your savings, and reach your financial goals faster with our smart tools.</p>
+                <div class="flex flex-wrap gap-4">
+                    <button class="flex items-center bg-primary text-gray-800 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+                        <i class="ri-add-line mr-2"></i>
+                        Add Spending
+                    </button>
+                    <button class="flex items-center bg-secondary text-gray-800 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+                        <i class="ri-add-line mr-2"></i>
+                        Add Saving
+                    </button>
+                    <button class="flex items-center bg-white text-gray-800 border border-gray-200 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+                        <i class="ri-flag-line mr-2"></i>
+                        Set Goal
+                    </button>
+                </div>
+            </div>
+            <div class="md:w-1/3 relative">
+                <div class="bg-white p-4 rounded-xl shadow-lg max-w-xs mx-auto relative">
+                    <div class="absolute -top-6 -right-6 w-16 h-16 bg-secondary rounded-full flex items-center justify-center border-4 border-white">
+                        <i class="ri-robot-line text-gray-800 ri-2x"></i>
+                    </div>
+                    <div class="pt-6">
+                        <p class="text-gray-800 mb-3">Hey there! I noticed you're getting closer to your gaming console goal. Keep it up! 🎮</p>
+                        <div class="text-xs text-gray-500 text-right">Your AI assistant</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-10 px-6 bg-white">
+        <div class="container mx-auto">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8">Your Financial Dashboard</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Spending Summary Card -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-800">Spending Summary</h3>
+                        <div class="flex bg-gray-100 rounded-full p-1">
+                            <button class="px-3 py-1 text-sm rounded-full bg-white shadow-sm text-gray-800 whitespace-nowrap">Week</button>
+                            <button class="px-3 py-1 text-sm rounded-full text-gray-600 whitespace-nowrap">Month</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="relative w-36 h-36">
+                            <svg class="w-full h-full" viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" r="16" fill="none" stroke="#f3f4f6" stroke-width="2"></circle>
+                                <circle cx="18" cy="18" r="16" fill="none" stroke="#98FFB3" stroke-width="2" stroke-dasharray="100 100" stroke-dashoffset="35" class="progress-ring-circle"></circle>
+                                <text x="18" y="18" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="bold" fill="#374151">65%</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-gray-600 mb-1">You've spent</p>
+                        <p class="text-2xl font-bold text-gray-800">$32.50 <span class="text-sm font-normal text-gray-500">of $50.00</span></p>
+                    </div>
+                </div>
+
+                <!-- Savings Tracker Card -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-800">Savings Tracker</h3>
+                        <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full">
+                            <i class="ri-information-line text-gray-600"></i>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="h-6 bg-gray-100 rounded-full overflow-hidden mb-2">
+                            <div class="h-full bg-secondary rounded-full" style="width: 75%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>$0</span>
+                            <span>$200</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-gray-600 mb-1">Current savings</p>
+                        <p class="text-2xl font-bold text-gray-800">$150.75</p>
+                        <p class="text-sm text-gray-500">You're saving $15 per week on average</p>
+                    </div>
+                </div>
+
+                <!-- Current Goal Card -->
+                <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-800">Current Goal</h3>
+                        <button class="text-gray-600 px-3 py-1 text-sm rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">Edit</button>
+                    </div>
+                    <div class="mb-4">
+                        <h4 class="text-lg font-bold text-gray-800 mb-1">Gaming Console</h4>
+                        <p class="text-gray-600 text-sm mb-3">Target date: August 15, 2025</p>
+                        <div class="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
+                            <div class="h-full bg-primary rounded-full" style="width: 60%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">$180 saved</span>
+                            <span class="text-gray-800 font-semibold">$300 goal</span>
+                        </div>
+                    </div>
+                    <button class="w-full flex items-center justify-center bg-gray-100 text-gray-800 px-4 py-3 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap">
+                        <i class="ri-robot-line mr-2"></i>
+                        AI Suggestions
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-10 px-6 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">AI Insights</h2>
+                <button class="flex items-center text-gray-600 px-4 py-2 rounded-button border border-gray-200 bg-white hover:bg-gray-50 whitespace-nowrap">
+                    <i class="ri-refresh-line mr-2"></i>
+                    Refresh
+                </button>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100 mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 flex items-center justify-center bg-secondary rounded-full flex-shrink-0">
+                        <i class="ri-lightbulb-line text-gray-800 ri-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Smart Tip</h3>
+                        <p class="text-gray-600 mb-4">You're spending about $8 per week on snacks. If you cut that in half, you could reach your gaming console goal 3 weeks earlier!</p>
+                        <div class="flex gap-3">
+                            <button class="text-primary font-semibold whitespace-nowrap">Apply this tip</button>
+                            <button class="text-gray-500 whitespace-nowrap">Not for me</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="font-semibold text-gray-800 mb-4">Goal Suggestions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all">
+                    <div class="w-12 h-12 flex items-center justify-center bg-primary/20 rounded-full mb-4">
+                        <i class="ri-bike-line text-gray-800 ri-lg"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-1">New Bike</h4>
+                    <p class="text-gray-600 text-sm mb-3">Based on your saving rate, you could afford a new bike in about 3 months.</p>
+                    <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap">Set as Goal</button>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all">
+                    <div class="w-12 h-12 flex items-center justify-center bg-secondary/30 rounded-full mb-4">
+                        <i class="ri-headphone-line text-gray-800 ri-lg"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-1">Wireless Headphones</h4>
+                    <p class="text-gray-600 text-sm mb-3">You could save up for quality headphones in just 4 weeks.</p>
+                    <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap">Set as Goal</button>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all">
+                    <div class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full mb-4">
+                        <i class="ri-bank-card-line text-gray-800 ri-lg"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-1">Emergency Fund</h4>
+                    <p class="text-gray-600 text-sm mb-3">Start building your first emergency fund with a $100 goal.</p>
+                    <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap">Set as Goal</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-10 px-6 bg-white">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">Recent Activity</h2>
+                <div class="flex items-center gap-2">
+                    <button class="flex items-center text-gray-600 px-4 py-2 rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
+                        <i class="ri-filter-3-line mr-2"></i>
+                        Filter
+                    </button>
+                    <button class="flex items-center bg-primary text-gray-800 px-4 py-2 rounded-button shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+                        <i class="ri-search-line mr-2"></i>
+                        Search
+                    </button>
+                </div>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Timeline Item 1 -->
+                <div class="timeline-item flex">
+                    <div class="timeline-dot relative w-12 h-12 flex items-center justify-center bg-green-100 rounded-full flex-shrink-0 mr-4">
+                        <i class="ri-money-dollar-circle-line text-green-600 ri-lg"></i>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Babysitting Payment</h4>
+                                <p class="text-gray-500 text-sm">Earning</p>
+                            </div>
+                            <span class="text-green-600 font-semibold">+$25.00</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500 text-sm">May 3, 2025</span>
+                            <div class="flex gap-2">
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                                    <i class="ri-edit-line"></i>
+                                </button>
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 2 -->
+                <div class="timeline-item flex">
+                    <div class="timeline-dot relative w-12 h-12 flex items-center justify-center bg-red-100 rounded-full flex-shrink-0 mr-4">
+                        <i class="ri-shopping-bag-line text-red-600 ri-lg"></i>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Movie Tickets</h4>
+                                <p class="text-gray-500 text-sm">Entertainment</p>
+                            </div>
+                            <span class="text-red-600 font-semibold">-$12.50</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500 text-sm">May 1, 2025</span>
+                            <div class="flex gap-2">
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                                    <i class="ri-edit-line"></i>
+                                </button>
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 3 -->
+                <div class="timeline-item flex">
+                    <div class="timeline-dot relative w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full flex-shrink-0 mr-4">
+                        <i class="ri-bank-line text-blue-600 ri-lg"></i>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Savings Transfer</h4>
+                                <p class="text-gray-500 text-sm">Gaming Console Goal</p>
+                            </div>
+                            <span class="text-blue-600 font-semibold">$15.00</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500 text-sm">April 28, 2025</span>
+                            <div class="flex gap-2">
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                                    <i class="ri-edit-line"></i>
+                                </button>
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 4 -->
+                <div class="timeline-item flex">
+                    <div class="timeline-dot relative w-12 h-12 flex items-center justify-center bg-red-100 rounded-full flex-shrink-0 mr-4">
+                        <i class="ri-restaurant-line text-red-600 ri-lg"></i>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Pizza with Friends</h4>
+                                <p class="text-gray-500 text-sm">Food</p>
+                            </div>
+                            <span class="text-red-600 font-semibold">-$8.75</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500 text-sm">April 25, 2025</span>
+                            <div class="flex gap-2">
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                                    <i class="ri-edit-line"></i>
+                                </button>
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <button class="text-gray-600 px-6 py-2 rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
+                    Load More
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-10 px-6">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="font-['Pacifico'] text-xl mb-4">logo</h3>
+                    <p class="text-gray-400 mb-4">Smart financial tools designed specifically for teens to learn money management in a fun, engaging way.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all">
+                            <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all">
+                            <i class="ri-twitter-x-line"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all">
+                            <i class="ri-tiktok-line"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Contact Support</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Want smarter suggestions?</h3>
+                    <p class="text-gray-400 mb-4">Tell us your interests and we'll personalize your experience.</p>
+                    <div class="flex">
+                        <input type="text" placeholder="Your interests..." class="flex-grow px-4 py-2 rounded-l-button bg-gray-700 border-none text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                        <button class="bg-primary text-gray-800 px-4 py-2 rounded-r-button font-semibold whitespace-nowrap">Submit</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
+                <p>© 2025 Teen Finance App. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle dark/light mode
+            const toggleCheckbox = document.getElementById('toggle');
+            toggleCheckbox.addEventListener('change', function() {
+                // This would implement dark mode toggle functionality
+                console.log('Dark mode toggled:', this.checked);
+            });
+        });
+    </script>
+</body>
+</html>
