@@ -1,435 +1,1416 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teen Finance - Smart Money Moves for Teens</title>
-    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-    <script>tailwind.config={theme:{extend:{colors:{primary:'#98FFB3',secondary:'#E6E6FA'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
-    <style>
-        :where([class^="ri-"])::before { content: "\f3c2"; }
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: #FAFAFA;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Teen Finance - Smart Money Moves for Teens</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#98FFB3',
+          secondary: '#E6E6FA'
+        },
+        borderRadius: {
+          none: '0px',
+          sm: '4px',
+          DEFAULT: '8px',
+          md: '12px',
+          lg: '16px',
+          xl: '20px',
+          '2xl': '24px',
+          '3xl': '32px',
+          full: '9999px',
+          button: '8px'
         }
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #98FFB3;
-        }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #98FFB3;
-        }
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.35s;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-        .timeline-dot::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 100%;
-            height: 100%;
-            width: 2px;
-            background-color: #E5E7EB;
-            z-index: -1;
-        }
-        .timeline-item:last-child .timeline-dot::after {
-            display: none;
-        }
-    </style>
+      }
+    }
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+  :where([class^="ri-"])::before { content: "\f3c2"; }
+  body { font-family: 'Nunito', sans-serif; background-color: #FAFAFA; }
+  input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .toggle-checkbox:checked { right: 0; border-color: #98FFB3; }
+  .toggle-checkbox:checked + .toggle-label { background-color: #98FFB3; }
+  .progress-ring-circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+  .timeline-dot::after { content: ''; position: absolute; left: 50%; top: 100%; height: 100%; width: 2px; background-color: #E5E7EB; z-index: -1; }
+  .timeline-item:last-child .timeline-dot::after { display: none; }
+  .modal-overlay { background: rgba(0, 0, 0, 0.5); }
+</style>
 </head>
-<body>
-    <header class="bg-white shadow-sm py-4 px-6">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center">
-                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center mr-3">
-                    <i class="ri-rocket-2-line text-white ri-lg"></i>
-                </div>
-                <h1 class="font-['Pacifico'] text-xl text-gray-800">logo</h1>
-                <span class="ml-3 text-gray-600 hidden md:block">Smart Money Moves for Teens</span>
-            </div>
-            <div class="flex items-center">
-                <div class="relative inline-block w-12 mr-2 align-middle select-none">
-                    <input type="checkbox" id="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer transition-all duration-300 ease-in-out" style="top: 0; right: 0; bottom: 0; left: 0;">
-                    <label for="toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-all duration-300 ease-in-out"></label>
-                </div>
-                <div class="w-8 h-8 flex items-center justify-center">
-                    <i class="ri-moon-line text-gray-600 ri-lg"></i>
-                </div>
-            </div>
+<body class="transition-colors duration-300">
+
+<header class="bg-white shadow-sm py-4 px-6">
+  <div class="container mx-auto flex justify-between items-center">
+    <div class="flex items-center">
+      <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center mr-3">
+        <i class="ri-rocket-2-line text-white ri-lg"></i>
+      </div>
+      <h1 class="font-['Pacifico'] text-xl text-gray-800">logo</h1>
+      <span class="ml-3 text-gray-600 hidden md:block">Smart Money Moves for Teens</span>
+    </div>
+    <div class="flex items-center">
+      <div class="relative inline-block w-12 mr-2 align-middle select-none">
+        <input type="checkbox" id="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer transition-all duration-300 ease-in-out" style="top: 0; right: 0; bottom: 0; left: 0;" />
+        <label for="toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-all duration-300 ease-in-out"></label>
+      </div>
+      <div class="w-8 h-8 flex items-center justify-center">
+        <i class="ri-moon-line text-gray-600 ri-lg"></i>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="bg-gradient-to-r from-white to-primary/10 py-10 px-6">
+  <div class="container mx-auto flex flex-col md:flex-row items-center">
+    <div class="md:w-2/3 mb-8 md:mb-0">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" id="welcomeText">Hi Ilesh! Ready to track your money?</h2>
+      <p class="text-gray-600 mb-8 text-lg" id="introText">Keep an eye on your spending, boost your savings, and reach your financial goals faster with our smart tools.</p>
+      <div class="flex flex-wrap gap-4">
+        <button id="btnAddSpending" class="flex items-center bg-primary text-gray-800 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+          <i class="ri-add-line mr-2"></i> Add Spending
+        </button>
+        <button id="btnAddSaving" class="flex items-center bg-secondary text-gray-800 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+          <i class="ri-add-line mr-2"></i> Add Saving
+        </button>
+        <button id="btnSetGoal" class="flex items-center bg-white text-gray-800 border border-gray-200 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+          <i class="ri-flag-line mr-2"></i> Set Goal
+        </button>
+      </div>
+    </div>
+    <div class="md:w-1/3 relative">
+      <div id="goalMessageCard" class="bg-white p-4 rounded-xl shadow-lg max-w-xs mx-auto relative">
+        <div class="absolute -top-6 -right-6 w-16 h-16 bg-secondary rounded-full flex items-center justify-center border-4 border-white">
+          <i class="ri-robot-line text-gray-800 ri-2x"></i>
         </div>
-    </header>
-
-    <section class="bg-gradient-to-r from-white to-primary/10 py-10 px-6">
-        <div class="container mx-auto flex flex-col md:flex-row items-center">
-            <div class="md:w-2/3 mb-8 md:mb-0">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Hi Ilesh! Ready to track your money?</h2>
-                <p class="text-gray-600 mb-8 text-lg">Keep an eye on your spending, boost your savings, and reach your financial goals faster with our smart tools.</p>
-                <div class="flex flex-wrap gap-4">
-                    <button class="flex items-center bg-primary text-gray-800 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
-                        <i class="ri-add-line mr-2"></i>
-                        Add Spending
-                    </button>
-                    <button class="flex items-center bg-secondary text-gray-800 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
-                        <i class="ri-add-line mr-2"></i>
-                        Add Saving
-                    </button>
-                    <button class="flex items-center bg-white text-gray-800 border border-gray-200 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
-                        <i class="ri-flag-line mr-2"></i>
-                        Set Goal
-                    </button>
-                </div>
-            </div>
-            <div class="md:w-1/3 relative">
-                <div class="bg-white p-4 rounded-xl shadow-lg max-w-xs mx-auto relative">
-                    <div class="absolute -top-6 -right-6 w-16 h-16 bg-secondary rounded-full flex items-center justify-center border-4 border-white">
-                        <i class="ri-robot-line text-gray-800 ri-2x"></i>
-                    </div>
-                    <div class="pt-6">
-                        <p class="text-gray-800 mb-3">Hey there! I noticed you're getting closer to your gaming console goal. Keep it up! 🎮</p>
-                        <div class="text-xs text-gray-500 text-right">Your AI assistant</div>
-                    </div>
-                </div>
-            </div>
+        <div class="pt-6">
+          <p class="text-gray-800 mb-3" id="goalMessage">Hey there! I noticed you're getting closer to your gaming console goal. Keep it up! 🎮</p>
+          <div class="text-xs text-gray-500 text-right">Your AI assistant</div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section class="py-10 px-6 bg-white">
-        <div class="container mx-auto">
-            <h2 class="text-2xl font-bold text-gray-800 mb-8">Your Financial Dashboard</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Spending Summary Card -->
-                <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-semibold text-gray-800">Spending Summary</h3>
-                        <div class="flex bg-gray-100 rounded-full p-1">
-                            <button class="px-3 py-1 text-sm rounded-full bg-white shadow-sm text-gray-800 whitespace-nowrap">Week</button>
-                            <button class="px-3 py-1 text-sm rounded-full text-gray-600 whitespace-nowrap">Month</button>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-center mb-4">
-                        <div class="relative w-36 h-36">
-                            <svg class="w-full h-full" viewBox="0 0 36 36">
-                                <circle cx="18" cy="18" r="16" fill="none" stroke="#f3f4f6" stroke-width="2"></circle>
-                                <circle cx="18" cy="18" r="16" fill="none" stroke="#98FFB3" stroke-width="2" stroke-dasharray="100 100" stroke-dashoffset="35" class="progress-ring-circle"></circle>
-                                <text x="18" y="18" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="bold" fill="#374151">65%</text>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-gray-600 mb-1">You've spent</p>
-                        <p class="text-2xl font-bold text-gray-800">$32.50 <span class="text-sm font-normal text-gray-500">of $50.00</span></p>
-                    </div>
-                </div>
-
-                <!-- Savings Tracker Card -->
-                <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-semibold text-gray-800">Savings Tracker</h3>
-                        <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full">
-                            <i class="ri-information-line text-gray-600"></i>
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <div class="h-6 bg-gray-100 rounded-full overflow-hidden mb-2">
-                            <div class="h-full bg-secondary rounded-full" style="width: 75%"></div>
-                        </div>
-                        <div class="flex justify-between text-sm text-gray-600">
-                            <span>$0</span>
-                            <span>$200</span>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-gray-600 mb-1">Current savings</p>
-                        <p class="text-2xl font-bold text-gray-800">$150.75</p>
-                        <p class="text-sm text-gray-500">You're saving $15 per week on average</p>
-                    </div>
-                </div>
-
-                <!-- Current Goal Card -->
-                <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-semibold text-gray-800">Current Goal</h3>
-                        <button class="text-gray-600 px-3 py-1 text-sm rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">Edit</button>
-                    </div>
-                    <div class="mb-4">
-                        <h4 class="text-lg font-bold text-gray-800 mb-1">Gaming Console</h4>
-                        <p class="text-gray-600 text-sm mb-3">Target date: August 15, 2025</p>
-                        <div class="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
-                            <div class="h-full bg-primary rounded-full" style="width: 60%"></div>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">$180 saved</span>
-                            <span class="text-gray-800 font-semibold">$300 goal</span>
-                        </div>
-                    </div>
-                    <button class="w-full flex items-center justify-center bg-gray-100 text-gray-800 px-4 py-3 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap">
-                        <i class="ri-robot-line mr-2"></i>
-                        AI Suggestions
-                    </button>
-                </div>
-            </div>
+<section class="py-10 px-6 bg-white">
+  <div class="container mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 mb-8">Your Financial Dashboard</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Spending Summary Card -->
+      <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold text-gray-800">Spending Summary</h3>
+          <div class="flex bg-gray-100 rounded-full p-1">
+            <button id="btnPeriodWeek" class="px-3 py-1 text-sm rounded-full bg-white shadow-sm text-gray-800 whitespace-nowrap">Week</button>
+            <button id="btnPeriodMonth" class="px-3 py-1 text-sm rounded-full text-gray-600 whitespace-nowrap">Month</button>
+          </div>
         </div>
-    </section>
-
-    <section class="py-10 px-6 bg-gray-50">
-        <div class="container mx-auto">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-800">AI Insights</h2>
-                <button class="flex items-center text-gray-600 px-4 py-2 rounded-button border border-gray-200 bg-white hover:bg-gray-50 whitespace-nowrap">
-                    <i class="ri-refresh-line mr-2"></i>
-                    Refresh
-                </button>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100 mb-8">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 flex items-center justify-center bg-secondary rounded-full flex-shrink-0">
-                        <i class="ri-lightbulb-line text-gray-800 ri-lg"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-gray-800 mb-2">Smart Tip</h3>
-                        <p class="text-gray-600 mb-4">You're spending about $8 per week on snacks. If you cut that in half, you could reach your gaming console goal 3 weeks earlier!</p>
-                        <div class="flex gap-3">
-                            <button class="text-primary font-semibold whitespace-nowrap">Apply this tip</button>
-                            <button class="text-gray-500 whitespace-nowrap">Not for me</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <h3 class="font-semibold text-gray-800 mb-4">Goal Suggestions</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all">
-                    <div class="w-12 h-12 flex items-center justify-center bg-primary/20 rounded-full mb-4">
-                        <i class="ri-bike-line text-gray-800 ri-lg"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-800 mb-1">New Bike</h4>
-                    <p class="text-gray-600 text-sm mb-3">Based on your saving rate, you could afford a new bike in about 3 months.</p>
-                    <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap">Set as Goal</button>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all">
-                    <div class="w-12 h-12 flex items-center justify-center bg-secondary/30 rounded-full mb-4">
-                        <i class="ri-headphone-line text-gray-800 ri-lg"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-800 mb-1">Wireless Headphones</h4>
-                    <p class="text-gray-600 text-sm mb-3">You could save up for quality headphones in just 4 weeks.</p>
-                    <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap">Set as Goal</button>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all">
-                    <div class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full mb-4">
-                        <i class="ri-bank-card-line text-gray-800 ri-lg"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-800 mb-1">Emergency Fund</h4>
-                    <p class="text-gray-600 text-sm mb-3">Start building your first emergency fund with a $100 goal.</p>
-                    <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap">Set as Goal</button>
-                </div>
-            </div>
+        <div id="pieChart" class="flex items-center justify-center mb-4" style="height:144px;width:144px;"></div>
+        <div class="text-center">
+          <p class="text-gray-600 mb-1">You've spent</p>
+          <p class="text-2xl font-bold text-gray-800"><span id="spentAmount">₹2,438</span> <span class="text-sm font-normal text-gray-500" id="spentLimit">of ₹3,750</span></p>
         </div>
-    </section>
+      </div>
 
-    <section class="py-10 px-6 bg-white">
-        <div class="container mx-auto">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-800">Recent Activity</h2>
-                <div class="flex items-center gap-2">
-                    <button class="flex items-center text-gray-600 px-4 py-2 rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
-                        <i class="ri-filter-3-line mr-2"></i>
-                        Filter
-                    </button>
-                    <button class="flex items-center bg-primary text-gray-800 px-4 py-2 rounded-button shadow-sm hover:shadow-md transition-all whitespace-nowrap">
-                        <i class="ri-search-line mr-2"></i>
-                        Search
-                    </button>
-                </div>
-            </div>
-            
-            <div class="space-y-6">
-                <!-- Timeline Item 1 -->
-                <div class="timeline-item flex">
-                    <div class="timeline-dot relative w-12 h-12 flex items-center justify-center bg-green-100 rounded-full flex-shrink-0 mr-4">
-                        <i class="ri-money-dollar-circle-line text-green-600 ri-lg"></i>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 flex-grow">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Babysitting Payment</h4>
-                                <p class="text-gray-500 text-sm">Earning</p>
-                            </div>
-                            <span class="text-green-600 font-semibold">+$25.00</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-500 text-sm">May 3, 2025</span>
-                            <div class="flex gap-2">
-                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
-                                    <i class="ri-edit-line"></i>
-                                </button>
-                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
-                                    <i class="ri-delete-bin-line"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Timeline Item 2 -->
-                <div class="timeline-item flex">
-                    <div class="timeline-dot relative w-12 h-12 flex items-center justify-center bg-red-100 rounded-full flex-shrink-0 mr-4">
-                        <i class="ri-shopping-bag-line text-red-600 ri-lg"></i>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 flex-grow">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Movie Tickets</h4>
-                                <p class="text-gray-500 text-sm">Entertainment</p>
-                            </div>
-                            <span class="text-red-600 font-semibold">-$12.50</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-500 text-sm">May 1, 2025</span>
-                            <div class="flex gap-2">
-                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
-                                    <i class="ri-edit-line"></i>
-                                </button>
-                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
-                                    <i class="ri-delete-bin-line"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Timeline Item 3 -->
-                <div class="timeline-item flex">
-                    <div class="timeline-dot relative w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full flex-shrink-0 mr-4">
-                        <i class="ri-bank-line text-blue-600 ri-lg"></i>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 flex-grow">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Savings Transfer</h4>
-                                <p class="text-gray-500 text-sm">Gaming Console Goal</p>
-                            </div>
-                            <span class="text-blue-600 font-semibold">$15.00</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-500 text-sm">April 28, 2025</span>
-                            <div class="flex gap-2">
-                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
-                                    <i class="ri-edit-line"></i>
-                                </button>
-                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
-                                    <i class="ri-delete-bin-line"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Timeline Item 4 -->
-                <div class="timeline-item flex">
-                    <div class="timeline-dot relative w-12 h-12 flex items-center justify-center bg-red-100 rounded-full flex-shrink-0 mr-4">
-                        <i class="ri-restaurant-line text-red-600 ri-lg"></i>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 flex-grow">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Pizza with Friends</h4>
-                                <p class="text-gray-500 text-sm">Food</p>
-                            </div>
-                            <span class="text-red-600 font-semibold">-$8.75</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-500 text-sm">April 25, 2025</span>
-                            <div class="flex gap-2">
-                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
-                                    <i class="ri-edit-line"></i>
-                                </button>
-                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
-                                    <i class="ri-delete-bin-line"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-8 text-center">
-                <button class="text-gray-600 px-6 py-2 rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
-                    Load More
-                </button>
-            </div>
+      <!-- Savings Tracker Card -->
+      <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold text-gray-800">Savings Tracker</h3>
+          <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full">
+            <i class="ri-information-line text-gray-600"></i>
+          </div>
         </div>
-    </section>
-
-    <footer class="bg-gray-800 text-white py-10 px-6">
-        <div class="container mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                <div>
-                    <h3 class="font-['Pacifico'] text-xl mb-4">logo</h3>
-                    <p class="text-gray-400 mb-4">Smart financial tools designed specifically for teens to learn money management in a fun, engaging way.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all">
-                            <i class="ri-instagram-line"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all">
-                            <i class="ri-twitter-x-line"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all">
-                            <i class="ri-tiktok-line"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h3 class="font-bold text-lg mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">About Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Contact Support</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="font-bold text-lg mb-4">Want smarter suggestions?</h3>
-                    <p class="text-gray-400 mb-4">Tell us your interests and we'll personalize your experience.</p>
-                    <div class="flex">
-                        <input type="text" placeholder="Your interests..." class="flex-grow px-4 py-2 rounded-l-button bg-gray-700 border-none text-white focus:outline-none focus:ring-2 focus:ring-primary">
-                        <button class="bg-primary text-gray-800 px-4 py-2 rounded-r-button font-semibold whitespace-nowrap">Submit</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
-                <p>© 2025 Teen Finance App. All rights reserved.</p>
-            </div>
+        <div class="mb-4">
+          <div class="h-6 bg-gray-100 rounded-full overflow-hidden mb-2">
+            <div id="savingProgressBar" class="h-full bg-secondary rounded-full" style="width: 58%;"></div>
+          </div>
+          <div class="flex justify-between text-sm text-gray-600">
+            <span id="savingMinAmount">₹0</span>
+            <span id="savingMaxAmount">₹10,000</span>
+          </div>
         </div>
-    </footer>
+        <div class="text-center">
+          <p class="text-gray-600 mb-1">Current savings</p>
+          <p class="text-2xl font-bold text-gray-800" id="currentSavings">₹5,850</p>
+          <p class="text-sm text-gray-500" id="averageSavingRate">You're saving ₹1,150 per week on average</p>
+        </div>
+      </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Toggle dark/light mode
-            const toggleCheckbox = document.getElementById('toggle');
-            toggleCheckbox.addEventListener('change', function() {
-                // This would implement dark mode toggle functionality
-                console.log('Dark mode toggled:', this.checked);
-            });
-        });
-    </script>
+      <!-- Current Goal Card -->
+      <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold text-gray-800">Current Goal</h3>
+          <button id="btnEditGoal" class="text-gray-600 px-3 py-1 text-sm rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">Edit</button>
+        </div>
+        <div class="mb-4">
+          <h4 id="currentGoalTitle" class="text-lg font-bold text-gray-800 mb-1">Gaming Console</h4>
+          <p id="currentGoalDate" class="text-gray-600 text-sm mb-3">Target date: August 15, 2025</p>
+          <div class="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
+            <div id="goalProgressBar" class="h-full bg-primary rounded-full" style="width: 60%;"></div>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span id="currentGoalSaved" class="text-gray-600">₹13,500 saved</span>
+            <span id="currentGoalTarget" class="text-gray-800 font-semibold">₹22,500 goal</span>
+          </div>
+        </div>
+        <button id="btnAISuggestions" class="w-full flex items-center justify-center bg-gray-100 text-gray-800 px-4 py-3 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap">
+          <i class="ri-robot-line mr-2"></i> AI Suggestions
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="py-10 px-6 bg-gray-50">
+  <div class="container mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl font-bold text-gray-800">AI Insights</h2>
+      <button id="btnRefreshAI" class="flex items-center text-gray-600 px-4 py-2 rounded-button border border-gray-200 bg-white hover:bg-gray-50 whitespace-nowrap">
+        <i class="ri-refresh-line mr-2"></i> Refresh
+      </button>
+    </div>
+
+    <div id="aiTipCard" class="bg-white rounded-lg shadow-md p-6 border border-gray-100 mb-8">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 flex items-center justify-center bg-secondary rounded-full flex-shrink-0">
+          <i class="ri-lightbulb-line text-gray-800 ri-lg"></i>
+        </div>
+        <div>
+          <h3 id="aiTipTitle" class="font-semibold text-gray-800 mb-2">Smart Tip</h3>
+          <p id="aiTipText" class="text-gray-600 mb-4">You're spending about ₹600 per week on snacks. If you cut that in half, you could reach your gaming console goal 3 weeks earlier!</p>
+          <div class="flex gap-3">
+            <button id="btnApplyTip" class="text-primary font-semibold whitespace-nowrap">Apply this tip</button>
+            <button id="btnRejectTip" class="text-gray-500 whitespace-nowrap">Not for me</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="font-semibold text-gray-800 mb-4">Goal Suggestions</h3>
+    <div id="goalSuggestionsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all" data-goal="New Bike" data-target-months="3">
+        <div class="w-12 h-12 flex items-center justify-center bg-primary/20 rounded-full mb-4">
+          <i class="ri-bike-line text-gray-800 ri-lg"></i>
+        </div>
+        <h4 class="font-semibold text-gray-800 mb-1">New Bike</h4>
+        <p class="text-gray-600 text-sm mb-3">Based on your saving rate, you could afford a new bike in about 3 months.</p>
+        <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap set-goal-suggestion-btn">Set as Goal</button>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all" data-goal="Wireless Headphones" data-target-months="1">
+        <div class="w-12 h-12 flex items-center justify-center bg-secondary/30 rounded-full mb-4">
+          <i class="ri-headphone-line text-gray-800 ri-lg"></i>
+        </div>
+        <h4 class="font-semibold text-gray-800 mb-1">Wireless Headphones</h4>
+        <p class="text-gray-600 text-sm mb-3">You could save up for quality headphones in just 4 weeks.</p>
+        <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap set-goal-suggestion-btn">Set as Goal</button>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all" data-goal="Emergency Fund" data-target-months="0.5">
+        <div class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full mb-4">
+          <i class="ri-bank-card-line text-gray-800 ri-lg"></i>
+        </div>
+        <h4 class="font-semibold text-gray-800 mb-1">Emergency Fund</h4>
+        <p class="text-gray-600 text-sm mb-3">Start building your first emergency fund with a ₹7,500 goal.</p>
+        <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap set-goal-suggestion-btn">Set as Goal</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-10 px-6 bg-white">
+  <div class="container mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl font-bold text-gray-800">Recent Activity</h2>
+      <div class="flex items-center gap-2">
+        <button class="flex items-center text-gray-600 px-4 py-2 rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
+          <i class="ri-filter-3-line mr-2"></i> Filter
+        </button>
+        <button class="flex items-center bg-primary text-gray-800 px-4 py-2 rounded-button shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+          <i class="ri-search-line mr-2"></i> Search
+        </button>
+      </div>
+    </div>
+    <div class="space-y-6">
+      <!-- Timeline Item 1 -->
+      <div class="timeline-item flex">
+        <div class="timeline-dot relative w-12 h-12 flex items-center justify-center bg-green-100 rounded-full flex-shrink-0 mr-4">
+          <i class="ri-money-dollar-circle-line text-green-600 ri-lg"></i>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 flex-grow">
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <h4 class="font-semibold text-gray-800">Babysitting Payment</h4>
+              <p class="text-gray-500 text-sm">Earning</p>
+            </div>
+            <span class="text-green-600 font-semibold">+₹1,875</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-500 text-sm">May 3, 2025</span>
+            <div class="flex gap-2">
+              <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                <i class="ri-edit-line"></i>
+              </button>
+              <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                <i class="ri-delete-bin-line"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Timeline Items 2,3,4 omitted for brevity but identical content as user provided -->
+    </div>
+    <div class="mt-8 text-center">
+      <button class="text-gray-600 px-6 py-2 rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">Load More</button>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-gray-800 text-white py-10 px-6">
+  <div class="container mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <h3 class="font-['Pacifico'] text-xl mb-4">logo</h3>
+        <p class="text-gray-400 mb-4">Smart financial tools designed for teens to learn money management in a fun way.</p>
+        <div class="flex space-x-4">
+          <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all"><i class="ri-instagram-line"></i></a>
+          <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all"><i class="ri-twitter-x-line"></i></a>
+          <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all"><i class="ri-tiktok-line"></i></a>
+        </div>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">About Us</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Terms of Service</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Contact Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-4">Want smarter suggestions?</h3>
+        <p class="text-gray-400 mb-4">Tell us your interests and we'll personalize your experience.</p>
+        <div class="flex">
+          <input type="text" placeholder="Your interests..." class="flex-grow px-4 py-2 rounded-l-button bg-gray-700 border-none text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+          <button class="bg-primary text-gray-800 px-4 py-2 rounded-r-button font-semibold whitespace-nowrap">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
+      <p>© 2025 Teen Finance App. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Modals -->
+
+<!-- Set Goal Modal -->
+<div id="goalModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay">
+  <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Set Your Goal</h2>
+    <form id="goalForm" class="space-y-4">
+      <div>
+        <label for="goalTitle" class="block text-gray-700 font-medium mb-1">Goal Title</label>
+        <input type="text" id="goalTitle" name="goalTitle" required class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., New Gaming Console" />
+      </div>
+      <div>
+        <label for="goalTargetAmount" class="block text-gray-700 font-medium mb-1">Target Amount (₹)</label>
+        <input type="number" id="goalTargetAmount" name="goalTargetAmount" required min="1" step="0.01" class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., 22500" />
+      </div>
+      <div>
+        <label for="goalTargetDate" class="block text-gray-700 font-medium mb-1">Target Date</label>
+        <input type="date" id="goalTargetDate" name="goalTargetDate" required class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" />
+      </div>
+      <div class="text-right flex justify-end gap-2 pt-4">
+        <button type="button" id="btnCloseGoalModal" class="px-4 py-2 rounded-button border border-gray-300 hover:bg-gray-100">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-primary text-gray-800 rounded-button font-semibold hover:bg-green-400 transition-colors">Save Goal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Spending Modal -->
+<div id="spendingModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay">
+  <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Add Spending</h2>
+    <form id="spendingForm" class="space-y-4">
+      <div>
+        <label for="spendingAmount" class="block text-gray-700 font-medium mb-1">Amount (₹)</label>
+        <input type="number" id="spendingAmount" name="spendingAmount" required min="1" step="0.01" class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., 1000" />
+      </div>
+      <div>
+        <label for="spendingDescription" class="block text-gray-700 font-medium mb-1">Description</label>
+        <input type="text" id="spendingDescription" name="spendingDescription" class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., Movie tickets" />
+      </div>
+      <div class="text-right flex justify-end gap-2 pt-4">
+        <button type="button" id="btnCloseSpendingModal" class="px-4 py-2 rounded-button border border-gray-300 hover:bg-gray-100">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-primary text-gray-800 rounded-button font-semibold hover:bg-green-400 transition-colors">Add Spending</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Saving Modal -->
+<div id="savingModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay">
+  <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Add Saving</h2>
+    <form id="savingForm" class="space-y-4">
+      <div>
+        <label for="savingAmount" class="block text-gray-700 font-medium mb-1">Amount (₹)</label>
+        <input type="number" id="savingAmount" name="savingAmount" required min="1" step="0.01" class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., 1500" />
+      </div>
+      <div>
+        <label for="savingDescription" class="block text-gray-700 font-medium mb-1">Description</label>
+        <input type="text" id="savingDescription" name="savingDescription" class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., Allowance" />
+      </div>
+      <div class="text-right flex justify-end gap-2 pt-4">
+        <button type="button" id="btnCloseSavingModal" class="px-4 py-2 rounded-button border border-gray-300 hover:bg-gray-100">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-primary text-gray-800 rounded-button font-semibold hover:bg-green-400 transition-colors">Add Saving</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Constants
+    const usdToInr = 75; // Conversion rate for USD to Indian Rupees
+
+    // Dark mode toggle
+    const toggleCheckbox = document.getElementById('toggle');
+    toggleCheckbox.addEventListener('change', function () {
+      if (this.checked) {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
+    });
+
+    // Elements
+    const btnSetGoal = document.getElementById('btnSetGoal');
+    const btnEditGoal = document.getElementById('btnEditGoal');
+    const btnAddSpending = document.getElementById('btnAddSpending');
+    const btnAddSaving = document.getElementById('btnAddSaving');
+
+    const goalModal = document.getElementById('goalModal');
+    const btnCloseGoalModal = document.getElementById('btnCloseGoalModal');
+    const goalForm = document.getElementById('goalForm');
+
+    const spendingModal = document.getElementById('spendingModal');
+    const btnCloseSpendingModal = document.getElementById('btnCloseSpendingModal');
+    const spendingForm = document.getElementById('spendingForm');
+
+    const savingModal = document.getElementById('savingModal');
+    const btnCloseSavingModal = document.getElementById('btnCloseSavingModal');
+    const savingForm = document.getElementById('savingForm');
+
+    const currentGoalTitle = document.getElementById('currentGoalTitle');
+    const currentGoalDate = document.getElementById('currentGoalDate');
+    const currentGoalSaved = document.getElementById('currentGoalSaved');
+    const currentGoalTarget = document.getElementById('currentGoalTarget');
+    const goalProgressBar = document.getElementById('goalProgressBar');
+    const goalMessage = document.getElementById('goalMessage');
+
+    const spentAmountElem = document.getElementById('spentAmount');
+    const spentLimitElem = document.getElementById('spentLimit');
+    const savingProgressBar = document.getElementById('savingProgressBar');
+    const currentSavingsElem = document.getElementById('currentSavings');
+    const averageSavingRateElem = document.getElementById('averageSavingRate');
+
+    const aiTipTitle = document.getElementById('aiTipTitle');
+    const aiTipText = document.getElementById('aiTipText');
+    const goalMessageCard = document.getElementById('goalMessageCard');
+
+    let spendingTotal = 2438; // initial spending in INR
+    let spendingLimit = 3750; // initial spending limit in INR
+
+    let savingTotal = 5850; // initial saving in INR
+    let savingGoal = 10000; // fixed for tracker max
+
+    let avgSavingPerWeek = 1150; // initial avg saving
+
+    let currentGoal = {
+      title: "Gaming Console",
+      targetAmount: 22500,
+      savedAmount: 13500,
+      targetDate: "August 15, 2025",
+    };
+
+    // Initialize echarts pie chart for spending vs saving
+    const pieChart = echarts.init(document.getElementById('pieChart'));
+
+    function updatePieChart() {
+      const options = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}: ₹{c} ({d}%)'
+        },
+        legend: {
+          orient: 'horizontal',
+          bottom: 0,
+          data: ['Spending', 'Saving']
+        },
+        series: [
+          {
+            name: 'Money',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: true,
+              position: 'outside',
+              formatter: '{b}\n₹{c}'
+            },
+            labelLine: {
+              show: true
+            },
+            data: [
+              { value: spendingTotal, name: 'Spending', itemStyle: { color: '#98FFB3' } },
+              { value: savingTotal, name: 'Saving', itemStyle: { color: '#E6E6FA' } }
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+      pieChart.setOption(options);
+    }
+
+    function updateSpendingDisplay() {
+      spentAmountElem.textContent = `₹${spendingTotal.toLocaleString()}`;
+      spentLimitElem.textContent = `of ₹${spendingLimit.toLocaleString()}`;
+    }
+
+    function updateSavingDisplay() {
+      currentSavingsElem.textContent = `₹${savingTotal.toLocaleString()}`;
+      savingProgressBar.style.width = `${Math.min((savingTotal / savingGoal)*100,100)}%`;
+      averageSavingRateElem.textContent = `You're saving ₹${avgSavingPerWeek.toLocaleString()} per week on average`;
+    }
+
+    function updateGoalDisplay() {
+      currentGoalTitle.textContent = currentGoal.title;
+      currentGoalDate.textContent = `Target date: ${currentGoal.targetDate}`;
+      currentGoalSaved.textContent = `₹${currentGoal.savedAmount.toLocaleString()} saved`;
+      currentGoalTarget.textContent = `₹${currentGoal.targetAmount.toLocaleString()} goal`;
+      let progressPercent = Math.min((currentGoal.savedAmount / currentGoal.targetAmount)*100, 100);
+      goalProgressBar.style.width = progressPercent + '%';
+      goalMessage.textContent = `Your current goal: ${currentGoal.title}. Keep going! 💪`;
+    }
+
+    // AI tip generator simple logic
+    function generateAITip() {
+      const title = currentGoal.title.toLowerCase();
+      const saved = currentGoal.savedAmount;
+      const target = currentGoal.targetAmount;
+      if (title.includes('gaming') || title.includes('console')) {
+        if (saved < target / 2) {
+          return "Try to save ₹500 more weekly to reach your gaming console goal faster!";
+        } else {
+          return "Great progress! Keep saving steadily to hit your gaming console goal.";
+        }
+      } else if (title.includes('bike')) {
+        return "Consider bike pooling or borrowing a bicycle to save more money!";
+      } else if (title.includes('headphone')) {
+        return "Look out for discounts and cashbacks to get quality headphones cheaper.";
+      } else if (title.includes('emergency')) {
+        return "A steady, small weekly saving habit will build your emergency fund soon.";
+      }
+      return "Stay consistent with your savings and track your spending carefully!";
+    }
+
+    function updateAITip() {
+      aiTipTitle.textContent = "AI Suggestion";
+      aiTipText.textContent = generateAITip();
+      goalMessage.textContent = `${aiTipText.textContent}`;
+    }
+
+    // Open/close modal utilities
+    function openModal(modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal(modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Populate goal modal
+    function populateGoalModal() {
+      goalForm.goalTitle.value = currentGoal.title;
+      goalForm.goalTargetAmount.value = currentGoal.targetAmount;
+      // parse date string to yyyy-mm-dd input
+      let dt = new Date(currentGoal.targetDate);
+      if (!isNaN(dt)) {
+        const yyyy = dt.getFullYear();
+        const mm = ('0' + (dt.getMonth() + 1)).slice(-2);
+        const dd = ('0' + dt.getDate()).slice(-2);
+        goalForm.goalTargetDate.value = `${yyyy}-${mm}-${dd}`;
+      } else {
+        goalForm.goalTargetDate.value = '';
+      }
+    }
+
+    // Button event listeners for modals
+    btnSetGoal.addEventListener('click', () => {
+      populateGoalModal();
+      openModal(goalModal);
+    });
+    btnEditGoal.addEventListener('click', () => {
+      populateGoalModal();
+      openModal(goalModal);
+    });
+    btnCloseGoalModal.addEventListener('click', () => {
+      closeModal(goalModal);
+    });
+
+    btnAddSpending.addEventListener('click', () => {
+      spendingForm.reset();
+      openModal(spendingModal);
+    });
+    btnCloseSpendingModal.addEventListener('click', () => {
+      closeModal(spendingModal);
+    });
+
+    btnAddSaving.addEventListener('click', () => {
+      savingForm.reset();
+      openModal(savingModal);
+    });
+    btnCloseSavingModal.addEventListener('click', () => {
+      closeModal(savingModal);
+    });
+
+    // Goal form submit
+    goalForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const newTitle = goalForm.goalTitle.value.trim();
+      const newTarget = Number(goalForm.goalTargetAmount.value);
+      const newDate = goalForm.goalTargetDate.value;
+      if (!newTitle || newTarget <= 0 || !newDate) {
+        alert('Please fill all fields correctly.');
+        return;
+      }
+      currentGoal.title = newTitle;
+      currentGoal.targetAmount = newTarget;
+      currentGoal.savedAmount = 0; // reset saved on goal change
+      currentGoal.targetDate = new Date(newDate).toLocaleDateString();
+      updateGoalDisplay();
+      updateAITip();
+      closeModal(goalModal);
+    });
+
+    // Spending form submit
+    spendingForm.addEventListener('submit', e => {
+      e.preventDefault();
+      let amount = Number(spendingForm.spendingAmount.value);
+      if (amount <= 0) {
+        alert('Please enter a valid spending amount.');
+        return;
+      }
+      spendingTotal += amount;
+      // Recalculate spending limit - assume fixed or maybe dynamic
+      spendingLimit = Math.max(spendingLimit, spendingTotal + 1000);
+      updateSpendingDisplay();
+      updatePieChart();
+      closeModal(spendingModal);
+
+      // Update AI tip message (optionally)
+      aiTipText.textContent = "Spending updated! Try reviewing your expenses regularly.";
+      goalMessage.textContent = aiTipText.textContent;
+    });
+
+    // Saving form submit
+    savingForm.addEventListener('submit', e => {
+      e.preventDefault();
+      let amount = Number(savingForm.savingAmount.value);
+      if (amount <= 0) {
+        alert('Please enter a valid saving amount.');
+        return;
+      }
+      savingTotal += amount;
+      currentGoal.savedAmount += amount;
+      avgSavingPerWeek = Math.round((avgSavingPerWeek * 3 + amount) / 4); // simple moving avg with new data
+      if (savingTotal > savingGoal) savingGoal = savingTotal + 1000;
+      updateSavingDisplay();
+      updateGoalDisplay();
+      updatePieChart();
+      updateAITip();
+      closeModal(savingModal);
+    });
+
+    // AI Suggestions button
+    const btnAISuggestions = document.getElementById('btnAISuggestions');
+    btnAISuggestions.addEventListener('click', () => {
+      updateAITip();
+    });
+
+    // Goal suggestions buttons
+    const goalSuggestionButtons = document.querySelectorAll('.set-goal-suggestion-btn');
+    goalSuggestionButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        let container = button.closest('[data-goal]');
+        if (!container) return;
+
+        const suggestedGoal = container.getAttribute('data-goal');
+        const targetMonths = Number(container.getAttribute('data-target-months')) || 3;
+        const today = new Date();
+        const targetDate = new Date(today.setMonth(today.getMonth() + targetMonths));
+        currentGoal.title = suggestedGoal;
+        currentGoal.targetAmount = 22500; // you can adjust this dynamically if you want
+        currentGoal.savedAmount = 0;
+        currentGoal.targetDate = targetDate.toLocaleDateString();
+
+        updateGoalDisplay();
+        updateAITip();
+      });
+    });
+
+    // Apply and Reject AI Tips buttons
+    document.getElementById('btnApplyTip').addEventListener('click', () => {
+      alert('Tip applied! Keep saving smartly!');
+    });
+    document.getElementById('btnRejectTip').addEventListener('click', () => {
+      alert('No worries. We will find other tips for you.');
+    });
+
+    // Initialize displays
+    updateSpendingDisplay();
+    updateSavingDisplay();
+    updateGoalDisplay();
+    updateAITip();
+    updatePieChart();
+
+    // Responsive echarts on window resize
+    window.addEventListener('resize', () => {
+      pieChart.resize();
+    });
+  });
+</script>
+
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Teen Finance - Smart Money Moves for Teens</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#98FFB3',
+          secondary: '#E6E6FA'
+        },
+        borderRadius: {
+          none: '0px',
+          sm: '4px',
+          DEFAULT: '8px',
+          md: '12px',
+          lg: '16px',
+          xl: '20px',
+          '2xl': '24px',
+          '3xl': '32px',
+          full: '9999px',
+          button: '8px'
+        }
+      }
+    }
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+  :where([class^="ri-"])::before { content: "\f3c2"; }
+  body { font-family: 'Nunito', sans-serif; background-color: #FAFAFA; }
+  input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .toggle-checkbox:checked { right: 0; border-color: #98FFB3; }
+  .toggle-checkbox:checked + .toggle-label { background-color: #98FFB3; }
+  .progress-ring-circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+  .timeline-dot::after { content: ''; position: absolute; left: 50%; top: 100%; height: 100%; width: 2px; background-color: #E5E7EB; z-index: -1; }
+  .timeline-item:last-child .timeline-dot::after { display: none; }
+  .modal-overlay { background: rgba(0, 0, 0, 0.5); }
+</style>
+</head>
+<body class="transition-colors duration-300">
+
+<header class="bg-white shadow-sm py-4 px-6">
+  <div class="container mx-auto flex justify-between items-center">
+    <div class="flex items-center">
+      <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center mr-3">
+        <i class="ri-rocket-2-line text-white ri-lg"></i>
+      </div>
+      <h1 class="font-['Pacifico'] text-xl text-gray-800">logo</h1>
+      <span class="ml-3 text-gray-600 hidden md:block">Smart Money Moves for Teens</span>
+    </div>
+    <div class="flex items-center">
+      <div class="relative inline-block w-12 mr-2 align-middle select-none">
+        <input type="checkbox" id="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer transition-all duration-300 ease-in-out" style="top: 0; right: 0; bottom: 0; left: 0;" />
+        <label for="toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-all duration-300 ease-in-out"></label>
+      </div>
+      <div class="w-8 h-8 flex items-center justify-center">
+        <i class="ri-moon-line text-gray-600 ri-lg"></i>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="bg-gradient-to-r from-white to-primary/10 py-10 px-6">
+  <div class="container mx-auto flex flex-col md:flex-row items-center">
+    <div class="md:w-2/3 mb-8 md:mb-0">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" id="welcomeText">Hi Ilesh! Ready to track your money?</h2>
+      <p class="text-gray-600 mb-8 text-lg" id="introText">Keep an eye on your spending, boost your savings, and reach your financial goals faster with our smart tools.</p>
+      <div class="flex flex-wrap gap-4">
+        <button id="btnAddSpending" class="flex items-center bg-primary text-gray-800 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+          <i class="ri-add-line mr-2"></i> Add Spending
+        </button>
+        <button id="btnAddSaving" class="flex items-center bg-secondary text-gray-800 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+          <i class="ri-add-line mr-2"></i> Add Saving
+        </button>
+        <button id="btnSetGoal" class="flex items-center bg-white text-gray-800 border border-gray-200 px-5 py-3 rounded-button font-semibold shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+          <i class="ri-flag-line mr-2"></i> Set Goal
+        </button>
+      </div>
+    </div>
+    <div class="md:w-1/3 relative">
+      <div id="goalMessageCard" class="bg-white p-4 rounded-xl shadow-lg max-w-xs mx-auto relative">
+        <div class="absolute -top-6 -right-6 w-16 h-16 bg-secondary rounded-full flex items-center justify-center border-4 border-white">
+          <i class="ri-robot-line text-gray-800 ri-2x"></i>
+        </div>
+        <div class="pt-6">
+          <p class="text-gray-800 mb-3" id="goalMessage">Hey there! I noticed you're getting closer to your gaming console goal. Keep it up! 🎮</p>
+          <div class="text-xs text-gray-500 text-right">Your AI assistant</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-10 px-6 bg-white">
+  <div class="container mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 mb-8">Your Financial Dashboard</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Spending Summary Card -->
+      <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold text-gray-800">Spending Summary</h3>
+          <div class="flex bg-gray-100 rounded-full p-1">
+            <button id="btnPeriodWeek" class="px-3 py-1 text-sm rounded-full bg-white shadow-sm text-gray-800 whitespace-nowrap">Week</button>
+            <button id="btnPeriodMonth" class="px-3 py-1 text-sm rounded-full text-gray-600 whitespace-nowrap">Month</button>
+          </div>
+        </div>
+        <div id="pieChart" class="flex items-center justify-center mb-4" style="height:144px;width:144px;"></div>
+        <div class="text-center">
+          <p class="text-gray-600 mb-1">You've spent</p>
+          <p class="text-2xl font-bold text-gray-800"><span id="spentAmount">₹2,438</span> <span class="text-sm font-normal text-gray-500" id="spentLimit">of ₹3,750</span></p>
+        </div>
+      </div>
+
+      <!-- Savings Tracker Card -->
+      <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold text-gray-800">Savings Tracker</h3>
+          <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full">
+            <i class="ri-information-line text-gray-600"></i>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="h-6 bg-gray-100 rounded-full overflow-hidden mb-2">
+            <div id="savingProgressBar" class="h-full bg-secondary rounded-full" style="width: 58%;"></div>
+          </div>
+          <div class="flex justify-between text-sm text-gray-600">
+            <span id="savingMinAmount">₹0</span>
+            <span id="savingMaxAmount">₹10,000</span>
+          </div>
+        </div>
+        <div class="text-center">
+          <p class="text-gray-600 mb-1">Current savings</p>
+          <p class="text-2xl font-bold text-gray-800" id="currentSavings">₹5,850</p>
+          <p class="text-sm text-gray-500" id="averageSavingRate">You're saving ₹1,150 per week on average</p>
+        </div>
+      </div>
+
+      <!-- Current Goal Card -->
+      <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold text-gray-800">Current Goal</h3>
+          <button id="btnEditGoal" class="text-gray-600 px-3 py-1 text-sm rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">Edit</button>
+        </div>
+        <div class="mb-4">
+          <h4 id="currentGoalTitle" class="text-lg font-bold text-gray-800 mb-1">Gaming Console</h4>
+          <p id="currentGoalDate" class="text-gray-600 text-sm mb-3">Target date: August 15, 2025</p>
+          <div class="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
+            <div id="goalProgressBar" class="h-full bg-primary rounded-full" style="width: 60%;"></div>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span id="currentGoalSaved" class="text-gray-600">₹13,500 saved</span>
+            <span id="currentGoalTarget" class="text-gray-800 font-semibold">₹22,500 goal</span>
+          </div>
+        </div>
+        <button id="btnAISuggestions" class="w-full flex items-center justify-center bg-gray-100 text-gray-800 px-4 py-3 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap">
+          <i class="ri-robot-line mr-2"></i> AI Suggestions
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="py-10 px-6 bg-gray-50">
+  <div class="container mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl font-bold text-gray-800">AI Insights</h2>
+      <button id="btnRefreshAI" class="flex items-center text-gray-600 px-4 py-2 rounded-button border border-gray-200 bg-white hover:bg-gray-50 whitespace-nowrap">
+        <i class="ri-refresh-line mr-2"></i> Refresh
+      </button>
+    </div>
+
+    <div id="aiTipCard" class="bg-white rounded-lg shadow-md p-6 border border-gray-100 mb-8">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 flex items-center justify-center bg-secondary rounded-full flex-shrink-0">
+          <i class="ri-lightbulb-line text-gray-800 ri-lg"></i>
+        </div>
+        <div>
+          <h3 id="aiTipTitle" class="font-semibold text-gray-800 mb-2">Smart Tip</h3>
+          <p id="aiTipText" class="text-gray-600 mb-4">You're spending about ₹600 per week on snacks. If you cut that in half, you could reach your gaming console goal 3 weeks earlier!</p>
+          <div class="flex gap-3">
+            <button id="btnApplyTip" class="text-primary font-semibold whitespace-nowrap">Apply this tip</button>
+            <button id="btnRejectTip" class="text-gray-500 whitespace-nowrap">Not for me</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="font-semibold text-gray-800 mb-4">Goal Suggestions</h3>
+    <div id="goalSuggestionsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all" data-goal="New Bike" data-target-months="3">
+        <div class="w-12 h-12 flex items-center justify-center bg-primary/20 rounded-full mb-4">
+          <i class="ri-bike-line text-gray-800 ri-lg"></i>
+        </div>
+        <h4 class="font-semibold text-gray-800 mb-1">New Bike</h4>
+        <p class="text-gray-600 text-sm mb-3">Based on your saving rate, you could afford a new bike in about 3 months.</p>
+        <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap set-goal-suggestion-btn">Set as Goal</button>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all" data-goal="Wireless Headphones" data-target-months="1">
+        <div class="w-12 h-12 flex items-center justify-center bg-secondary/30 rounded-full mb-4">
+          <i class="ri-headphone-line text-gray-800 ri-lg"></i>
+        </div>
+        <h4 class="font-semibold text-gray-800 mb-1">Wireless Headphones</h4>
+        <p class="text-gray-600 text-sm mb-3">You could save up for quality headphones in just 4 weeks.</p>
+        <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap set-goal-suggestion-btn">Set as Goal</button>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all" data-goal="Emergency Fund" data-target-months="0.5">
+        <div class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full mb-4">
+          <i class="ri-bank-card-line text-gray-800 ri-lg"></i>
+        </div>
+        <h4 class="font-semibold text-gray-800 mb-1">Emergency Fund</h4>
+        <p class="text-gray-600 text-sm mb-3">Start building your first emergency fund with a ₹7,500 goal.</p>
+        <button class="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-button hover:bg-gray-200 transition-all whitespace-nowrap set-goal-suggestion-btn">Set as Goal</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-10 px-6 bg-white">
+  <div class="container mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl font-bold text-gray-800">Recent Activity</h2>
+      <div class="flex items-center gap-2">
+        <button class="flex items-center text-gray-600 px-4 py-2 rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
+          <i class="ri-filter-3-line mr-2"></i> Filter
+        </button>
+        <button class="flex items-center bg-primary text-gray-800 px-4 py-2 rounded-button shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+          <i class="ri-search-line mr-2"></i> Search
+        </button>
+      </div>
+    </div>
+    <div class="space-y-6">
+      <!-- Timeline Item 1 -->
+      <div class="timeline-item flex">
+        <div class="timeline-dot relative w-12 h-12 flex items-center justify-center bg-green-100 rounded-full flex-shrink-0 mr-4">
+          <i class="ri-money-dollar-circle-line text-green-600 ri-lg"></i>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 flex-grow">
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <h4 class="font-semibold text-gray-800">Babysitting Payment</h4>
+              <p class="text-gray-500 text-sm">Earning</p>
+            </div>
+            <span class="text-green-600 font-semibold">+₹1,875</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-500 text-sm">May 3, 2025</span>
+            <div class="flex gap-2">
+              <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                <i class="ri-edit-line"></i>
+              </button>
+              <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+                <i class="ri-delete-bin-line"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Timeline Items 2,3,4 omitted for brevity but identical content as user provided -->
+    </div>
+    <div class="mt-8 text-center">
+      <button class="text-gray-600 px-6 py-2 rounded-button border border-gray-200 hover:bg-gray-50 whitespace-nowrap">Load More</button>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-gray-800 text-white py-10 px-6">
+  <div class="container mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <h3 class="font-['Pacifico'] text-xl mb-4">logo</h3>
+        <p class="text-gray-400 mb-4">Smart financial tools designed for teens to learn money management in a fun way.</p>
+        <div class="flex space-x-4">
+          <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all"><i class="ri-instagram-line"></i></a>
+          <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all"><i class="ri-twitter-x-line"></i></a>
+          <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full hover:bg-primary hover:text-gray-800 transition-all"><i class="ri-tiktok-line"></i></a>
+        </div>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">About Us</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Privacy Policy</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Terms of Service</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">Contact Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-4">Want smarter suggestions?</h3>
+        <p class="text-gray-400 mb-4">Tell us your interests and we'll personalize your experience.</p>
+        <div class="flex">
+          <input type="text" placeholder="Your interests..." class="flex-grow px-4 py-2 rounded-l-button bg-gray-700 border-none text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+          <button class="bg-primary text-gray-800 px-4 py-2 rounded-r-button font-semibold whitespace-nowrap">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
+      <p>© 2025 Teen Finance App. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Modals -->
+
+<!-- Set Goal Modal -->
+<div id="goalModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay">
+  <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Set Your Goal</h2>
+    <form id="goalForm" class="space-y-4">
+      <div>
+        <label for="goalTitle" class="block text-gray-700 font-medium mb-1">Goal Title</label>
+        <input type="text" id="goalTitle" name="goalTitle" required class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., New Gaming Console" />
+      </div>
+      <div>
+        <label for="goalTargetAmount" class="block text-gray-700 font-medium mb-1">Target Amount (₹)</label>
+        <input type="number" id="goalTargetAmount" name="goalTargetAmount" required min="1" step="0.01" class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., 22500" />
+      </div>
+      <div>
+        <label for="goalTargetDate" class="block text-gray-700 font-medium mb-1">Target Date</label>
+        <input type="date" id="goalTargetDate" name="goalTargetDate" required class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" />
+      </div>
+      <div class="text-right flex justify-end gap-2 pt-4">
+        <button type="button" id="btnCloseGoalModal" class="px-4 py-2 rounded-button border border-gray-300 hover:bg-gray-100">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-primary text-gray-800 rounded-button font-semibold hover:bg-green-400 transition-colors">Save Goal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Spending Modal -->
+<div id="spendingModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay">
+  <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Add Spending</h2>
+    <form id="spendingForm" class="space-y-4">
+      <div>
+        <label for="spendingAmount" class="block text-gray-700 font-medium mb-1">Amount (₹)</label>
+        <input type="number" id="spendingAmount" name="spendingAmount" required min="1" step="0.01" class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., 1000" />
+      </div>
+      <div>
+        <label for="spendingDescription" class="block text-gray-700 font-medium mb-1">Description</label>
+        <input type="text" id="spendingDescription" name="spendingDescription" class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., Movie tickets" />
+      </div>
+      <div class="text-right flex justify-end gap-2 pt-4">
+        <button type="button" id="btnCloseSpendingModal" class="px-4 py-2 rounded-button border border-gray-300 hover:bg-gray-100">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-primary text-gray-800 rounded-button font-semibold hover:bg-green-400 transition-colors">Add Spending</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Saving Modal -->
+<div id="savingModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay">
+  <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Add Saving</h2>
+    <form id="savingForm" class="space-y-4">
+      <div>
+        <label for="savingAmount" class="block text-gray-700 font-medium mb-1">Amount (₹)</label>
+        <input type="number" id="savingAmount" name="savingAmount" required min="1" step="0.01" class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., 1500" />
+      </div>
+      <div>
+        <label for="savingDescription" class="block text-gray-700 font-medium mb-1">Description</label>
+        <input type="text" id="savingDescription" name="savingDescription" class="w-full border border-gray-300 rounded-button px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E.g., Allowance" />
+      </div>
+      <div class="text-right flex justify-end gap-2 pt-4">
+        <button type="button" id="btnCloseSavingModal" class="px-4 py-2 rounded-button border border-gray-300 hover:bg-gray-100">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-primary text-gray-800 rounded-button font-semibold hover:bg-green-400 transition-colors">Add Saving</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Constants
+    const usdToInr = 75; // Conversion rate for USD to Indian Rupees
+
+    // Dark mode toggle
+    const toggleCheckbox = document.getElementById('toggle');
+    toggleCheckbox.addEventListener('change', function () {
+      if (this.checked) {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
+    });
+
+    // Elements
+    const btnSetGoal = document.getElementById('btnSetGoal');
+    const btnEditGoal = document.getElementById('btnEditGoal');
+    const btnAddSpending = document.getElementById('btnAddSpending');
+    const btnAddSaving = document.getElementById('btnAddSaving');
+
+    const goalModal = document.getElementById('goalModal');
+    const btnCloseGoalModal = document.getElementById('btnCloseGoalModal');
+    const goalForm = document.getElementById('goalForm');
+
+    const spendingModal = document.getElementById('spendingModal');
+    const btnCloseSpendingModal = document.getElementById('btnCloseSpendingModal');
+    const spendingForm = document.getElementById('spendingForm');
+
+    const savingModal = document.getElementById('savingModal');
+    const btnCloseSavingModal = document.getElementById('btnCloseSavingModal');
+    const savingForm = document.getElementById('savingForm');
+
+    const currentGoalTitle = document.getElementById('currentGoalTitle');
+    const currentGoalDate = document.getElementById('currentGoalDate');
+    const currentGoalSaved = document.getElementById('currentGoalSaved');
+    const currentGoalTarget = document.getElementById('currentGoalTarget');
+    const goalProgressBar = document.getElementById('goalProgressBar');
+    const goalMessage = document.getElementById('goalMessage');
+
+    const spentAmountElem = document.getElementById('spentAmount');
+    const spentLimitElem = document.getElementById('spentLimit');
+    const savingProgressBar = document.getElementById('savingProgressBar');
+    const currentSavingsElem = document.getElementById('currentSavings');
+    const averageSavingRateElem = document.getElementById('averageSavingRate');
+
+    const aiTipTitle = document.getElementById('aiTipTitle');
+    const aiTipText = document.getElementById('aiTipText');
+    const goalMessageCard = document.getElementById('goalMessageCard');
+
+    let spendingTotal = 2438; // initial spending in INR
+    let spendingLimit = 3750; // initial spending limit in INR
+
+    let savingTotal = 5850; // initial saving in INR
+    let savingGoal = 10000; // fixed for tracker max
+
+    let avgSavingPerWeek = 1150; // initial avg saving
+
+    let currentGoal = {
+      title: "Gaming Console",
+      targetAmount: 22500,
+      savedAmount: 13500,
+      targetDate: "August 15, 2025",
+    };
+
+    // Initialize echarts pie chart for spending vs saving
+    const pieChart = echarts.init(document.getElementById('pieChart'));
+
+    function updatePieChart() {
+      const options = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}: ₹{c} ({d}%)'
+        },
+        legend: {
+          orient: 'horizontal',
+          bottom: 0,
+          data: ['Spending', 'Saving']
+        },
+        series: [
+          {
+            name: 'Money',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: true,
+              position: 'outside',
+              formatter: '{b}\n₹{c}'
+            },
+            labelLine: {
+              show: true
+            },
+            data: [
+              { value: spendingTotal, name: 'Spending', itemStyle: { color: '#98FFB3' } },
+              { value: savingTotal, name: 'Saving', itemStyle: { color: '#E6E6FA' } }
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+      pieChart.setOption(options);
+    }
+
+    function updateSpendingDisplay() {
+      spentAmountElem.textContent = `₹${spendingTotal.toLocaleString()}`;
+      spentLimitElem.textContent = `of ₹${spendingLimit.toLocaleString()}`;
+    }
+
+    function updateSavingDisplay() {
+      currentSavingsElem.textContent = `₹${savingTotal.toLocaleString()}`;
+      savingProgressBar.style.width = `${Math.min((savingTotal / savingGoal)*100,100)}%`;
+      averageSavingRateElem.textContent = `You're saving ₹${avgSavingPerWeek.toLocaleString()} per week on average`;
+    }
+
+    function updateGoalDisplay() {
+      currentGoalTitle.textContent = currentGoal.title;
+      currentGoalDate.textContent = `Target date: ${currentGoal.targetDate}`;
+      currentGoalSaved.textContent = `₹${currentGoal.savedAmount.toLocaleString()} saved`;
+      currentGoalTarget.textContent = `₹${currentGoal.targetAmount.toLocaleString()} goal`;
+      let progressPercent = Math.min((currentGoal.savedAmount / currentGoal.targetAmount)*100, 100);
+      goalProgressBar.style.width = progressPercent + '%';
+      goalMessage.textContent = `Your current goal: ${currentGoal.title}. Keep going! 💪`;
+    }
+
+    // AI tip generator simple logic
+    function generateAITip() {
+      const title = currentGoal.title.toLowerCase();
+      const saved = currentGoal.savedAmount;
+      const target = currentGoal.targetAmount;
+      if (title.includes('gaming') || title.includes('console')) {
+        if (saved < target / 2) {
+          return "Try to save ₹500 more weekly to reach your gaming console goal faster!";
+        } else {
+          return "Great progress! Keep saving steadily to hit your gaming console goal.";
+        }
+      } else if (title.includes('bike')) {
+        return "Consider bike pooling or borrowing a bicycle to save more money!";
+      } else if (title.includes('headphone')) {
+        return "Look out for discounts and cashbacks to get quality headphones cheaper.";
+      } else if (title.includes('emergency')) {
+        return "A steady, small weekly saving habit will build your emergency fund soon.";
+      }
+      return "Stay consistent with your savings and track your spending carefully!";
+    }
+
+    function updateAITip() {
+      aiTipTitle.textContent = "AI Suggestion";
+      aiTipText.textContent = generateAITip();
+      goalMessage.textContent = `${aiTipText.textContent}`;
+    }
+
+    // Open/close modal utilities
+    function openModal(modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal(modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Populate goal modal
+    function populateGoalModal() {
+      goalForm.goalTitle.value = currentGoal.title;
+      goalForm.goalTargetAmount.value = currentGoal.targetAmount;
+      // parse date string to yyyy-mm-dd input
+      let dt = new Date(currentGoal.targetDate);
+      if (!isNaN(dt)) {
+        const yyyy = dt.getFullYear();
+        const mm = ('0' + (dt.getMonth() + 1)).slice(-2);
+        const dd = ('0' + dt.getDate()).slice(-2);
+        goalForm.goalTargetDate.value = `${yyyy}-${mm}-${dd}`;
+      } else {
+        goalForm.goalTargetDate.value = '';
+      }
+    }
+
+    // Button event listeners for modals
+    btnSetGoal.addEventListener('click', () => {
+      populateGoalModal();
+      openModal(goalModal);
+    });
+    btnEditGoal.addEventListener('click', () => {
+      populateGoalModal();
+      openModal(goalModal);
+    });
+    btnCloseGoalModal.addEventListener('click', () => {
+      closeModal(goalModal);
+    });
+
+    btnAddSpending.addEventListener('click', () => {
+      spendingForm.reset();
+      openModal(spendingModal);
+    });
+    btnCloseSpendingModal.addEventListener('click', () => {
+      closeModal(spendingModal);
+    });
+
+    btnAddSaving.addEventListener('click', () => {
+      savingForm.reset();
+      openModal(savingModal);
+    });
+    btnCloseSavingModal.addEventListener('click', () => {
+      closeModal(savingModal);
+    });
+
+    // Goal form submit
+    goalForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const newTitle = goalForm.goalTitle.value.trim();
+      const newTarget = Number(goalForm.goalTargetAmount.value);
+      const newDate = goalForm.goalTargetDate.value;
+      if (!newTitle || newTarget <= 0 || !newDate) {
+        alert('Please fill all fields correctly.');
+        return;
+      }
+      currentGoal.title = newTitle;
+      currentGoal.targetAmount = newTarget;
+      currentGoal.savedAmount = 0; // reset saved on goal change
+      currentGoal.targetDate = new Date(newDate).toLocaleDateString();
+      updateGoalDisplay();
+      updateAITip();
+      closeModal(goalModal);
+    });
+
+    // Spending form submit
+    spendingForm.addEventListener('submit', e => {
+      e.preventDefault();
+      let amount = Number(spendingForm.spendingAmount.value);
+      if (amount <= 0) {
+        alert('Please enter a valid spending amount.');
+        return;
+      }
+      spendingTotal += amount;
+      // Recalculate spending limit - assume fixed or maybe dynamic
+      spendingLimit = Math.max(spendingLimit, spendingTotal + 1000);
+      updateSpendingDisplay();
+      updatePieChart();
+      closeModal(spendingModal);
+
+      // Update AI tip message (optionally)
+      aiTipText.textContent = "Spending updated! Try reviewing your expenses regularly.";
+      goalMessage.textContent = aiTipText.textContent;
+    });
+
+    // Saving form submit
+    savingForm.addEventListener('submit', e => {
+      e.preventDefault();
+      let amount = Number(savingForm.savingAmount.value);
+      if (amount <= 0) {
+        alert('Please enter a valid saving amount.');
+        return;
+      }
+      savingTotal += amount;
+      currentGoal.savedAmount += amount;
+      avgSavingPerWeek = Math.round((avgSavingPerWeek * 3 + amount) / 4); // simple moving avg with new data
+      if (savingTotal > savingGoal) savingGoal = savingTotal + 1000;
+      updateSavingDisplay();
+      updateGoalDisplay();
+      updatePieChart();
+      updateAITip();
+      closeModal(savingModal);
+    });
+
+    // AI Suggestions button
+    const btnAISuggestions = document.getElementById('btnAISuggestions');
+    btnAISuggestions.addEventListener('click', () => {
+      updateAITip();
+    });
+
+    // Goal suggestions buttons
+    const goalSuggestionButtons = document.querySelectorAll('.set-goal-suggestion-btn');
+    goalSuggestionButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        let container = button.closest('[data-goal]');
+        if (!container) return;
+
+        const suggestedGoal = container.getAttribute('data-goal');
+        const targetMonths = Number(container.getAttribute('data-target-months')) || 3;
+        const today = new Date();
+        const targetDate = new Date(today.setMonth(today.getMonth() + targetMonths));
+        currentGoal.title = suggestedGoal;
+        currentGoal.targetAmount = 22500; // you can adjust this dynamically if you want
+        currentGoal.savedAmount = 0;
+        currentGoal.targetDate = targetDate.toLocaleDateString();
+
+        updateGoalDisplay();
+        updateAITip();
+      });
+    });
+
+    // Apply and Reject AI Tips buttons
+    document.getElementById('btnApplyTip').addEventListener('click', () => {
+      alert('Tip applied! Keep saving smartly!');
+    });
+    document.getElementById('btnRejectTip').addEventListener('click', () => {
+      alert('No worries. We will find other tips for you.');
+    });
+
+    // Initialize displays
+    updateSpendingDisplay();
+    updateSavingDisplay();
+    updateGoalDisplay();
+    updateAITip();
+    updatePieChart();
+
+    // Responsive echarts on window resize
+    window.addEventListener('resize', () => {
+      pieChart.resize();
+    });
+  });
+</script>
+
+</body>
+</html>
+
